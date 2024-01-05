@@ -53,6 +53,15 @@
         <input type="number" name="price" id="price" value="{{ old('price', $aitool->price) }}">
     </fieldset>
 
+    <fieldset>
+        <label for="tags">Címkék</label>
+        <select name="tags[]" id="tags" multiple>
+            @foreach ($tags as $tag)
+                <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+            @endforeach
+        </select>
+    </fieldset>
+
     <button type="submit">Mentés</button>
 </form>
 

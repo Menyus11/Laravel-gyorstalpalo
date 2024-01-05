@@ -15,7 +15,9 @@ class AitoolsController extends Controller
      */
     public function index()
     {
-        $aitools = Aitool::with('tags')->get();
+        $sort_by = request()->query('sort_by', 'name');
+        $sort_dir = request()->query('sort_dir', 'asc');
+        $aitools = Aitool::with('tags')->orderBy($sort_by, $sort_dir)->paginate(5);
         return view('aitools.index', compact('aitools'));
     }
 
@@ -71,7 +73,8 @@ class AitoolsController extends Controller
     {
         $aitool = Aitool::find($id);
         $categories = Category::all();
-        return view('aitools.edit', compact('aitool', 'categories'));
+        $tags = Tag::all();
+        return view('aitools.edit', compact('aitool', 'categories', 'tags'));
     }
 
     /**
@@ -102,6 +105,7 @@ class AitoolsController extends Controller
         $aitool->hasFreePlan = $request->hasFreePlan;
         $aitool->price = $request->price;  */
         $aitool->update($validated );
+        $aitool->tags()->attach($request->tags);
 
         return redirect()->route('aitools.index')->with('success', 'Az AI eszköz sikeresen frissítve!');
     }

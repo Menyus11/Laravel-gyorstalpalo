@@ -1,7 +1,11 @@
 @extends('layout')
 
 @section('content')
-    <h1>AI eszközök <a href="{{ route('aitools.create') }}" title="Új AI eszköz">Felvétel</a> </h1>
+    <h1>AI eszközök
+        <a href="{{ route('aitools.create') }}" title="Új AI eszköz">Felvétel</a>
+        <a href="{{ route('aitools.index', ['sort_by' => 'name', 'sort_dir' => 'asc']) }}" title="ABC">▼</a>
+        <a href="{{ route('aitools.index', ['sort_by' => 'name', 'sort_dir' => 'desc']) }}" title="ZYX">▲</a>
+    </h1>
 
     @if (session('success'))
         <div class="alert alert-success">
@@ -30,4 +34,11 @@
             </li>
         @endforeach
     </ul>
+
+    <div id="paginator">
+        {{ $aitools->appends([
+                'sort_by' => request()->query('sort_by'),
+                'sort_dir' => request()->query('sort_dir'),
+            ])->links() }}
+    </div>
 @endsection
